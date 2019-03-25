@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Application\Bus;
+namespace App\Infrastructure\Application\MessageBus;
 
-use App\Application\Contract\Bus\QueryBus as QueryBusInterface;
+use App\Application\Contract\MessageBus\QueryBus as QueryBusInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\HandleTrait;
 use Symfony\Component\Messenger\MessageBusInterface;

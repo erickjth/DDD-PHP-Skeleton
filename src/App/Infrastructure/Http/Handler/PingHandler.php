@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Http\Handler;
 
 use App\Application\Command\PingCommand;
-use App\Application\Contract\Bus\QueryBus;
+use App\Application\Contract\MessageBus\QueryBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;

@@ -6,15 +6,17 @@ services:
     autoconfigure: true
     public: false
 
+  messenger.senders_locator:
+    class: Symfony\Component\Messenger\Transport\Sender\SendersLocator
+    arguments:
+      - []
+    public: true
+
   App\Application\Handler\:
     resource: '../../../Application/Handler/*'
+    tags: [messenger.message_handler]
     public: true
 
   App\Infrastructure\Http\Handler\:
     resource: '../../Http/Handler/*'
     public: true
-
-  App\Application\Contract\Bus\QueryBus:
-    class: App\Infrastructure\Application\Bus\QueryBus
-    arguments:
-      - '@messenger.bus.query'

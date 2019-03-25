@@ -13,29 +13,13 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 class Configuration implements ConfigurationInterface
 {
     /**
-     * Tree builder root name
-     *
-     * @var string
-     */
-    private $rootName;
-
-    /**
-     * Config constructor.
-     *
-     * @param string $rootName
-     */
-    public function __construct(string $rootName)
-    {
-        $this->rootName = $rootName;
-    }
-
-    /**
      * {@inheritDoc}
      */
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root($this->rootName);
+
+        $rootNode = $treeBuilder->root('infrastructure');
 
         // Here you should define the parameters that are allowed to
         // configure your bundle. See the documentation linked above for

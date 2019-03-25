@@ -6,8 +6,7 @@ namespace App\Framework\DependencyInjection;
 
 use JSoumelidis\SymfonyDI\Config\Config as BaseConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use App\Framework\DependencyInjection\Extension;
-use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
+use App\Framework\DependencyInjection\ExtensionInterface;
 use ReflectionClass;
 use InvalidArgumentException;
 
@@ -60,19 +59,17 @@ class Config extends BaseConfig
 
 					$extensionObject = $extensionReflector->newInstance();
 
-					if ($extensionObject instanceof Extension)
-					{
-						$configurationClass = substr_replace($class, '\Configuration', strrpos($class, '\\'));
+					$moduleConfig = $this->config[$module] ?? [];
 
-						if (class_exists($class) === true)
-						{
-							$moduleConfig = $this->config[$module] ?? [];
-							$configuration = new $configurationClass($module);
-							$extensionObject->setConfiguration($configuration, $moduleConfig);
-						}
+					$configurationClass = substr_replace($class, '\Configuration', strrpos($class, '\\'));
+
+					if (class_exists($class) === true)
+					{
+						$configuration = new $configurationClass();
+						$extensionObject->processConfiguration($configuration, $moduleConfig);
 					}
 
-					$extensionObject->load($config, $builder);
+					$extensionObject->load($moduleConfig, $builder);
 				}
 			}
 		}

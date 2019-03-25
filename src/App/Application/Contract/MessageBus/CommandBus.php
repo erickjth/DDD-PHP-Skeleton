@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Contract\Bus;
+namespace App\Application\Contract\MessageBus;
 
 /**
  * Interface Command Bus Contract

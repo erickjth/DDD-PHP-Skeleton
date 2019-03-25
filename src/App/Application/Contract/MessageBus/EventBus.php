@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Contract\Bus;
+namespace App\Application\Contract\MessageBus;
 
 /**
- * Interface QueryBus Contract
+ * Interface Event Bus Contract
  */
-interface QueryBus
+interface EventBus
 {
-    /**
+/**
      * @param object|Envelope $query
      *
      * @return mixed The handler returned value
      */
-    public function query($message);
+    public function dispatch($message);
 }

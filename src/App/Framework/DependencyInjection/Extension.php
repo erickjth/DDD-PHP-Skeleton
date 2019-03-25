@@ -3,12 +3,14 @@
 namespace App\Framework\DependencyInjection;
 
 use Symfony\Component\Config\Definition\ConfigurationInterface;
-use Symfony\Component\DependencyInjection\Extension\Extension as BaseExtension;
+use Symfony\Component\Config\Definition\Processor;
 
-abstract class Extension extends BaseExtension
+abstract class Extension implements ExtensionInterface
 {
-	public function setConfiguration(ConfigurationInterface $configuration, array $configs)
+	public function processConfiguration(ConfigurationInterface $configuration, array $configs)
 	{
-		$this->processConfiguration($configuration, $configs);
+		$processor = new Processor();
+
+		return $processor->processConfiguration($configuration, $configs);
 	}
 }
