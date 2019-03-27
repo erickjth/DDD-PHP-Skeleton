@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure;
 
 use App\Application\Contract\MessageBus\QueryBus;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use App\Infrastructure\Container;
 use Psr\Log\LoggerInterface;
 
@@ -38,6 +39,7 @@ class ConfigProvider
 			],
 			'factories'  => [
 				LoggerInterface::class => Container\Factory\LoggerFactory::class,
+				ValidatorInterface::class => Container\Factory\ValidatorFactory::class,
 				QueryBus::class => Container\Factory\MessageBus\QueryBusFactory::class,
 			],
 			'extensions' => [

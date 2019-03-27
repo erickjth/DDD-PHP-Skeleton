@@ -22,7 +22,9 @@ class PingHandler implements RequestHandlerInterface
 
 	public function handle(ServerRequestInterface $request) : ResponseInterface
 	{
-		$command = new PingCommand(time());
+		$args = [time()];
+
+		$command = new PingCommand(...$args);
 
 		$result = $this->queryBus->query($command);
 

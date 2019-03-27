@@ -34,6 +34,7 @@
         "jsoumelidis/zend-sf-di-config": "^0.3",
         "monolog/monolog": "^1.24",
         "symfony/config": "^4.2",
+        "symfony/validator": "^4.2",
         "symfony/yaml": "^4.2",
         "xtreamwayz/expressive-messenger": "^0.4.1",
         "zendframework/zend-component-installer": "^2.1.1",

@@ -1,0 +1,4 @@
+App\Application\Command\PingCommand:
+  properties:
+    time:
+        - NotBlank: ~
