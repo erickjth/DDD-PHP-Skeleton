@@ -20,3 +20,7 @@ services:
   App\Infrastructure\Http\Handler\:
     resource: '../../Http/Handler/*'
     public: true
+
+  App\Application\Action\:
+    resource: '../../../Application/Action/*'
+    tags: [event_dispatcher.listener]

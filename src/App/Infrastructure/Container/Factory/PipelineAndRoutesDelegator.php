@@ -21,8 +21,8 @@ class PipelineAndRoutesDelegator
 {
 	public function __invoke(ContainerInterface $container, string $serviceName, callable $callback) : Application
 	{
-        /** @var $app Application */
-        $app = $callback();
+		/** @var $app Application */
+		$app = $callback();
 
 		// Setup pipeline:
 
@@ -109,8 +109,8 @@ class PipelineAndRoutesDelegator
 		 *     'contact'
 		 * );
 		 */
-        $app->get('/api/ping', Handler\PingHandler::class, 'api.ping');
+		$app->get('/api/ping', Handler\PingHandler::class, 'api.ping');
 
-        return $app;
-    }
+		return $app;
+	}
 }

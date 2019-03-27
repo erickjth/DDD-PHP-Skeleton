@@ -3,6 +3,8 @@
 namespace App\Infrastructure\Container;
 
 use App\Framework\DependencyInjection\Extension;
+use App\Infrastructure\Container\Compiler\EventDispatcherCompilerPass;
+use App\Infrastructure\Container\Compiler\MessageHandlerCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -23,5 +25,6 @@ class InfrastructureExtension extends Extension
 
 		// Add Passes after load
 		$container->addCompilerPass(new MessageHandlerCompilerPass());
+		$container->addCompilerPass(new EventDispatcherCompilerPass());
 	}
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Container;
+namespace App\Infrastructure\Container\Compiler;
 
 use Symfony\Component\DependencyInjection\Argument\IteratorArgument;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
