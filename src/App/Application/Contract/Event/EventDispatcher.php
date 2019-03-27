@@ -12,17 +12,23 @@ interface EventDispatcher
 	/**
 	 * Register a listener
 	 *
-	 * @param EventListener $listener
+	 * @param callable $listener
 	 */
-	public function register(EventListener $listener);
+	public function addListener(string $eventName, callable $listener);
 
 	/**
-	 * Dispatch an event thought listener
+	 * Register subscriber
 	 *
-	 * @param string $name
+	 * @param EventSubscriber $eventSubscriber
+	 */
+	public function addSubscriber(EventSubscriber $eventSubscriber);
+
+	/**
+	 * Dispatch an event thought listeners
+	 *
 	 * @param Event $event
 	 *
 	 * @return void
 	 */
-	public function dispatch(string $name, Event $event);
+	public function dispatch(Event $event);
 }

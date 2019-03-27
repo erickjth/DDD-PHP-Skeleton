@@ -7,11 +7,7 @@ namespace App\Infrastructure\Container\Factory\MessageBus;
 use App\Application\Contract\MessageBus\QueryBus as QueryBusInterface;
 use App\Infrastructure\Application\MessageBus\QueryBus;
 use Psr\Container\ContainerInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\MessageBus;
-use Symfony\Component\Messenger\Middleware\HandleMessageMiddleware;
-use Symfony\Component\Messenger\Middleware\LoggingMiddleware;
-use Symfony\Component\Messenger\Middleware\SendMessageMiddleware;
 
 class QueryBusFactory
 {
@@ -29,14 +25,16 @@ class QueryBusFactory
 
 		$middlewareStack = [];
 
+		$middlewareStack[] = $container->get('messender.middleware.release_recorded_events_middleware');
+
 		if ($debug === true)
 		{
-			$middlewareStack[] = new LoggingMiddleware($container->get(LoggerInterface::class));
+			$middlewareStack[] = $container->get('messender.middleware.logging_middleware');
 		}
 
-		$middlewareStack[] = new SendMessageMiddleware($container->get('messenger.senders_locator'));
+		$middlewareStack[] = $container->get('messender.middleware.send_message_middleware');
 
-		$middlewareStack[] = new HandleMessageMiddleware($container->get('messenger.handlers_locator'));
+		$middlewareStack[] = $container->get('messender.middleware.handle_message_middleware');
 
 		$bus = new MessageBus($middlewareStack);
 

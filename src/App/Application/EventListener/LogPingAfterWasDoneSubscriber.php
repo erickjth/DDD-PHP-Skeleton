@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Action;
+namespace App\Application\EventListener;
 
 use Psr\Log\LoggerInterface;
 use App\Application\Event\PingWasDoneEvent;
-use App\Application\Contract\Event\EventListener;
+use App\Application\Contract\Event\EventSubscriber;
 
-class LogPingAction implements EventListener
+class LogPingAfterWasDoneSubscriber implements EventSubscriber
 {
 	private $logger;
 
@@ -20,7 +20,7 @@ class LogPingAction implements EventListener
 	public function getSubscribedEvents()
 	{
 		return array(
-			PingWasDoneEvent::NAME => 'onPingWasDone',
+			PingWasDoneEvent::class => [$this, 'onPingWasDone'],
 		);
 	}
 
@@ -31,6 +31,6 @@ class LogPingAction implements EventListener
 			'class' => \get_class($event),
 		];
 
-		$this->logger->debug('Handling event "{class}"', $context);
+		$this->logger->debug('Handling event from subscriber "{class}"', $context);
 	}
 }

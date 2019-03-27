@@ -21,6 +21,36 @@ services:
     resource: '../../Http/Handler/*'
     public: true
 
-  App\Application\Action\:
-    resource: '../../../Application/Action/*'
+  App\Application\EventListener\:
+    resource: '../../../Application/EventListener/*'
     tags: [event_dispatcher.listener]
+
+  App\Application\MessageBus\Recorder\EventRecorder:
+    public: true
+
+  event_recorders:
+    alias: App\Application\MessageBus\Recorder\EventRecorder
+    public: true
+
+  messender.middleware.handle_message_middleware:
+    class: App\Infrastructure\Application\MessageBus\Middleware\HandleMessageWithEventRecorederMiddleware
+    arguments:
+      - '@messenger.handlers_locator'
+      - '@event_recorders'
+    public: true
+
+  messender.middleware.logging_middleware:
+    class: Symfony\Component\Messenger\Middleware\LoggingMiddleware
+    arguments:
+      - '@Psr\Log\LoggerInterface'
+    public: true
+
+  messender.middleware.send_message_middleware:
+    class: Symfony\Component\Messenger\Middleware\SendMessageMiddleware
+    arguments:
+      - '@messenger.senders_locator'
+    public: true
+
+  messender.middleware.release_recorded_events_middleware:
+    class: App\Infrastructure\Application\MessageBus\Middleware\ReleaseRecordedEventsMiddleware
+    public: true

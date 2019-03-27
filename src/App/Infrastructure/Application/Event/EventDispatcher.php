@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Application\Event;
 
 use App\Application\Contract\Event\EventDispatcher as EventDispatcherInterface;
-use App\Application\Contract\Event\EventListener;
+use App\Application\Contract\Event\EventSubscriber;
 use App\Application\Contract\Event\Event;
 
 class EventDispatcher implements EventDispatcherInterface
@@ -20,36 +20,58 @@ class EventDispatcher implements EventDispatcherInterface
 	/**
 	 * Register a listener
 	 *
-	 * @param EventListener $listener
+	 * @param callable $listener
 	 */
-	public function register(EventListener $listener)
+	public function addListener(string $eventName, callable $listener)
 	{
-		$this->listeners[] = $listener;
+		$this->listeners[$eventName][] = $listener;
 	}
 
 	/**
-	 * Dispatch an event thought listener
+	 * Register subscriber
 	 *
-	 * @param string $name
+	 * @param EventSubscriber $eventSubscriber
+	 */
+	public function addSubscriber(EventSubscriber $eventSubscriber)
+	{
+		foreach($eventSubscriber->getSubscribedEvents() as $eventName => $listener)
+		{
+			$this->addListener($eventName, $listener);
+		}
+	}
+
+	/**
+	 * Dispatch an event thought listeners and subscribers
+	 *
 	 * @param Event $event
 	 *
 	 * @return void
 	 */
-	public function dispatch(string $name, Event $event)
+	public function dispatch(Event $event)
 	{
-		foreach ($this->listeners as $listener)
-		{
-			$subscribedEvents = $listener->getSubscribedEvents();
+		$name = get_class($event);
 
-			if (
-				is_array($subscribedEvents) &&
-				count($subscribedEvents) > 0 &&
-				array_key_exists($name, $subscribedEvents)
-			)
+		foreach ($this->getListeners($name) as $listener)
+		{
+			call_user_func_array($listener, [$event]);
+		}
+	}
+
+	public function getListeners($eventName) : iterable
+	{
+		$seen = [];
+
+		foreach ($this->listeners[$eventName] ?? [] as $alias => $listener)
+		{
+			if (!\in_array($listener, $seen, true))
 			{
-				$method = $subscribedEvents[$name];
-				call_user_func_array([$listener, $method], [$event]);
+				yield $alias => $seen[] = $listener;
 			}
 		}
+	}
+
+	public function hasListeners($eventName)
+	{
+		return isset($this->listeners[$eventName]);
 	}
 }

@@ -8,8 +8,6 @@ use App\Application\Contract\Event\Event;
 
 class PingWasDoneEvent implements Event
 {
-	public const NAME = 'ping.was.done';
-
 	private $time;
 
 	public function __construct(int $time)

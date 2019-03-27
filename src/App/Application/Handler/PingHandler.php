@@ -4,25 +4,20 @@ declare(strict_types=1);
 
 namespace App\Application\Handler;
 
-use App\Application\Contract\Event\EventDispatcher;
+use App\Application\MessageBus\Recorder\EventRecorderAware;
+use App\Application\MessageBus\Recorder\EventRecorderAwareTrait;
 use App\Application\Command\PingCommand;
 use App\Application\Event\PingWasDoneEvent;
 
-class PingHandler
+class PingHandler implements EventRecorderAware
 {
-	private $dispatcher;
-
-	public function __construct(EventDispatcher $dispatcher)
-	{
-		$this->dispatcher = $dispatcher;
-	}
+	use EventRecorderAwareTrait;
 
 	public function __invoke(PingCommand $message) : array
 	{
 		$time = $message->getTime();
 
-		// @TODO: This events needs to be dispatched after the bus run completaly.
-		$this->dispatcher->dispatch(PingWasDoneEvent::NAME, new PingWasDoneEvent($time));
+		$this->record(new PingWasDoneEvent($time));
 
 		return [
 			'ack' => $time,
