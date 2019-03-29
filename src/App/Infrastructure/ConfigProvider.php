@@ -6,6 +6,8 @@ namespace App\Infrastructure;
 
 use App\Application\Contract\MessageBus\QueryBus;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Doctrine\DBAL\Driver\Connection;
+use Doctrine\ORM\EntityManager;
 use App\Infrastructure\Container;
 use Psr\Log\LoggerInterface;
 
@@ -38,9 +40,16 @@ class ConfigProvider
 			'invokables' => [
 			],
 			'factories'  => [
+				Connection::class => Container\Factory\Database\DoctrineConnectionFactory::class,
+				EntityManager::class => Container\Factory\Database\DoctrineEntityManagerFactory::class,
+				LoggerInterface::class => Container\Factory\LoggerFactory::class,
 				LoggerInterface::class => Container\Factory\LoggerFactory::class,
 				ValidatorInterface::class => Container\Factory\ValidatorFactory::class,
 				QueryBus::class => Container\Factory\MessageBus\QueryBusFactory::class,
+			],
+			'aliases' => [
+				'doctrine.connection' => Connection::class,
+				'doctrine.entitymanager' => EntityManager::class,
 			],
 			'extensions' => [
 				'infrastructure' => Container\InfrastructureExtension::class

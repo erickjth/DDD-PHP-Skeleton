@@ -1,0 +1,6 @@
+App\Domain\ValueObject\IdentityId:
+  type: embeddable
+  fields:
+    uuid:
+        type: uuid
+        unique: true

@@ -1,0 +1,32 @@
+App\Domain\Entity\Identity:
+    type: entity
+    table: identity
+    repositoryClass: App\Infrastructure\Persistence\Doctrine\IdentityRepository
+    id:
+        id:
+          type: integer
+          generator:
+            strategy: AUTO
+          options:
+            unsigned: true
+    embedded:
+        identityId:
+            class: App\Domain\ValueObject\IdentityId
+            columnPrefix: false
+    fields:
+      firstName:
+        type: string
+        length: 100
+      lastName:
+        type: string
+        length: 100
+      email:
+        type: string
+        length: 32
+        unique: true
+        options:
+          fixed: true
+          comment: User's email address
+      createdAt:
+        type: datetime
+

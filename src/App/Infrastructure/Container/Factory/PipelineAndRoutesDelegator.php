@@ -15,6 +15,8 @@ use Zend\Expressive\Router\Middleware\ImplicitHeadMiddleware;
 use Zend\Expressive\Router\Middleware\ImplicitOptionsMiddleware;
 use Zend\Expressive\Router\Middleware\MethodNotAllowedMiddleware;
 use Zend\Expressive\Router\Middleware\RouteMiddleware;
+use Zend\ProblemDetails\ProblemDetailsNotFoundHandler;
+use Zend\ProblemDetails\ProblemDetailsMiddleware;
 use Zend\Stratigility\Middleware\ErrorHandler;
 
 class PipelineAndRoutesDelegator
@@ -44,6 +46,7 @@ class PipelineAndRoutesDelegator
 		// applications under a common domain.  The handlers in each middleware
 		// attached this way will see a URI with the matched path segment removed.
 		//
+		$app->pipe('/api', ProblemDetailsMiddleware::class);
 		// i.e., path of "/api/member/profile" only passes "/member/profile" to $apiMiddleware
 		// - $app->pipe('/api', $apiMiddleware);
 		// - $app->pipe('/docs', $apiDocMiddleware);
@@ -75,6 +78,8 @@ class PipelineAndRoutesDelegator
 
 		// Register the dispatch middleware in the middleware pipeline
 		$app->pipe(DispatchMiddleware::class);
+
+		$app->pipe(ProblemDetailsNotFoundHandler::class);
 
 		// At this point, if no Response is returned by any middleware, the
 		// NotFoundHandler kicks in; alternately, you can provide other fallback
@@ -109,7 +114,8 @@ class PipelineAndRoutesDelegator
 		 *     'contact'
 		 * );
 		 */
-		$app->get('/api/ping', Handler\PingHandler::class, 'api.ping');
+		$app->route('/api/ping', Handler\PingHandler::class, ['GET'], 'api.ping');
+		$app->route('/api/identity', Handler\GetIdentityHandler::class, ['GET'], 'identity.get');
 
 		return $app;
 	}

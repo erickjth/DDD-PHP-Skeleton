@@ -17,6 +17,11 @@ Basic implementation of Domain-Driven Design using Zend Expressive as a HTTP Por
 
 ## Getting Started
 
+## Config
+- `cp config/autoload/local.php.dist config/autoload/local.php`
+
+## Setup database connection.
+
 Start the project with composer:
 
 ```bash

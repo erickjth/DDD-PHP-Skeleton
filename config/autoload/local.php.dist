@@ -9,4 +9,11 @@
 declare(strict_types=1);
 
 return [
+	'database' => [
+		'dbname' => 'mydb',
+		'user' => 'user',
+		'password' => '',
+		'host' => 'localhost',
+		'driver' => 'pdo_sqlite',
+	]
 ];

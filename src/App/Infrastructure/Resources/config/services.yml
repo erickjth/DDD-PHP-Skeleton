@@ -25,6 +25,9 @@ services:
     resource: '../../../Application/EventListener/*'
     tags: [event_dispatcher.listener]
 
+  App\Application\Identifier\UuidEncoder:
+    public: true
+
   App\Application\MessageBus\Recorder\EventRecorder:
     public: true
 

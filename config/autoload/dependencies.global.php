@@ -32,4 +32,12 @@ return [
             ],
         ],
     ],
+
+    'database' => [
+		'dbname' => 'mydb',
+		'user' => 'user',
+		'password' => '',
+		'host' => 'localhost',
+		'driver' => 'pdo_sqlite',
+	]
 ];
