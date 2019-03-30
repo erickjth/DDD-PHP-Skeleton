@@ -23,17 +23,16 @@ class QueryBusFactory
 		$config = $container->has('config') ? $container->get('config') : [];
 		$debug = $config['debug'] ?? false;
 
-		$middlewareStack = [];
-
-		$middlewareStack[] = $container->get('messender.middleware.release_recorded_events_middleware');
+		$middlewareStack = [
+			$container->get('messender.middleware.validation_middleware'),
+			$container->get('messender.middleware.release_recorded_events_middleware')
+		];
 
 		if ($debug === true)
 		{
 			$middlewareStack[] = $container->get('messender.middleware.logging_middleware');
 		}
 
-		$middlewareStack[] = $container->get('messender.middleware.validation_middleware');
-		$middlewareStack[] = $container->get('messender.middleware.send_message_middleware');
 		$middlewareStack[] = $container->get('messender.middleware.handle_message_middleware');
 
 		$bus = new MessageBus($middlewareStack);
