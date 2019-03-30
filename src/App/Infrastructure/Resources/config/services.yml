@@ -68,3 +68,8 @@ services:
       - '@validation'
     public: true
 
+  messender.middleware.doctrine_transaction_middleware:
+    class: App\Infrastructure\Application\MessageBus\Middleware\DoctrineTransactionMiddleware
+    arguments:
+      - '@doctrine.entitymanager'
+    public: true
