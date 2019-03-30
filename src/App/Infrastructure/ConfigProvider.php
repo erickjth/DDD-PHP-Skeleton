@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace App\Infrastructure;
 
 use App\Application\Contract\MessageBus\QueryBus;
+use App\Application\Contract\MessageBus\CommandBus;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Doctrine\DBAL\Driver\Connection;
 use Doctrine\ORM\EntityManager;
 use App\Infrastructure\Container;
 use Psr\Log\LoggerInterface;
+
 
 /**
  * The configuration provider for the App module
@@ -46,6 +48,7 @@ class ConfigProvider
 				LoggerInterface::class => Container\Factory\LoggerFactory::class,
 				ValidatorInterface::class => Container\Factory\ValidatorFactory::class,
 				QueryBus::class => Container\Factory\MessageBus\QueryBusFactory::class,
+				CommandBus::class => Container\Factory\MessageBus\CommandBusFactory::class,
 			],
 			'aliases' => [
 				'doctrine.connection' => Connection::class,
