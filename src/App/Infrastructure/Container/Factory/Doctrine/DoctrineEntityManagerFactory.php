@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Container\Factory\Database;
+namespace App\Infrastructure\Container\Factory\Doctrine;
 
 use Psr\Container\ContainerInterface;
 use Doctrine\DBAL\Driver\Connection;

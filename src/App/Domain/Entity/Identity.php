@@ -86,16 +86,5 @@ class Identity
 	{
 		return $this->createdAt;
 	}
-
-	public function toArray()
-	{
-		return [
-			'uuid' => $this->identityId->toString(),
-			'firstName' => $this->firstName,
-			'lastName' => $this->lastName,
-			'email' => $this->email,
-			'createdAt' => $this->createdAt->format('Y-m-d\TH:i:s\Z'),
-		];
-	}
 }
 

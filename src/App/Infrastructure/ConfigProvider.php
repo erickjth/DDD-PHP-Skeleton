@@ -6,10 +6,11 @@ namespace App\Infrastructure;
 
 use App\Application\Contract\MessageBus\QueryBus;
 use App\Application\Contract\MessageBus\CommandBus;
+use App\Domain\Contract\IdentityRepository;
+use App\Infrastructure\Container;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Doctrine\DBAL\Driver\Connection;
 use Doctrine\ORM\EntityManager;
-use App\Infrastructure\Container;
 use Psr\Log\LoggerInterface;
 
 
@@ -42,13 +43,18 @@ class ConfigProvider
 			'invokables' => [
 			],
 			'factories'  => [
-				Connection::class => Container\Factory\Database\DoctrineConnectionFactory::class,
-				EntityManager::class => Container\Factory\Database\DoctrineEntityManagerFactory::class,
+				// Doctrine
+				Connection::class => Container\Factory\Doctrine\DoctrineConnectionFactory::class,
+				EntityManager::class => Container\Factory\Doctrine\DoctrineEntityManagerFactory::class,
+				// Logger
 				LoggerInterface::class => Container\Factory\LoggerFactory::class,
-				LoggerInterface::class => Container\Factory\LoggerFactory::class,
+				// Validator
 				ValidatorInterface::class => Container\Factory\ValidatorFactory::class,
+				// Message bus
 				QueryBus::class => Container\Factory\MessageBus\QueryBusFactory::class,
 				CommandBus::class => Container\Factory\MessageBus\CommandBusFactory::class,
+				// Repositories
+				IdentityRepository::class => Container\Factory\Repository\IdentityRepositoryFactory::class,
 			],
 			'aliases' => [
 				'doctrine.connection' => Connection::class,
