@@ -59,6 +59,9 @@ class ConfigProvider
 			'aliases' => [
 				'doctrine.connection' => Connection::class,
 				'doctrine.entitymanager' => EntityManager::class,
+				'messenger.bus.queries' => QueryBus::class,
+				'messenger.bus.commands' => CommandBus::class,
+				'messenger.bus.default' => CommandBus::class,
 			],
 			'extensions' => [
 				'infrastructure' => Container\InfrastructureExtension::class

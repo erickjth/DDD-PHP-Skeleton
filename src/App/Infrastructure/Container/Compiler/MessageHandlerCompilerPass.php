@@ -17,12 +17,16 @@ class MessageHandlerCompilerPass implements CompilerPassInterface
 	{
 		$handlers = $container->findTaggedServiceIds('messenger.message_handler', true);
 
-		$handlersByMessage = [];
+		$handlersByBusAndMessage = [];
+
+		$busIds = [];
 
 		foreach ($handlers as $serviceId => $tags)
 		{
 			foreach ($tags as $tag)
 			{
+				$busId = $tag['bus'] ?? 'messenger.bus.commands'; // default is messenger.bus.commands
+
 				// TODO: add tags for buses
 				$className = $container->getDefinition($serviceId)->getClass();
 				$handlerReflector = $container->getReflectionClass($className);
@@ -36,34 +40,49 @@ class MessageHandlerCompilerPass implements CompilerPassInterface
 
 				$priority = $tag['priority'] ?? 0;
 
-				$handlersByMessage[$messageType][$priority][] = $serviceId;
+				$handlersByBusAndMessage[$busId][$messageType][$priority][] = $serviceId;
+
+				$busIds[] = $busId;
 			}
 		}
 
-		foreach ($handlersByMessage as $message => $handlersByPriority)
+		foreach ($handlersByBusAndMessage as $bus => $handlersByMessage)
 		{
-			krsort($handlersByPriority);
-			$handlersByMessage[$message] = array_unique(array_merge(...$handlersByPriority));
+			foreach ($handlersByMessage as $message => $handlersByPriority)
+			{
+				krsort($handlersByPriority);
+				$handlersByBusAndMessage[$bus][$message] = array_unique(array_merge(...$handlersByPriority));
+			}
 		}
 
-		$handlersLocatorMapping = [];
-		foreach ($handlersByMessage as $message => $handlerIds)
+		$handlersLocatorMappingByBus = [];
+		foreach ($handlersByBusAndMessage as $bus => $handlersByMessage)
 		{
-			$handlers = array_map(function (string $handlerId) { return new Reference($handlerId); }, $handlerIds);
-			$handlersLocatorMapping[$message] = new IteratorArgument($handlers);
+			foreach ($handlersByMessage as $message => $handlerIds)
+			{
+				$handlers = array_map(function (string $handlerId) {
+					return new Reference($handlerId);
+				}, $handlerIds);
+
+				$handlersLocatorMappingByBus[$bus][$message] = new IteratorArgument($handlers);
+			}
 		}
 
-		$locatorId = 'messenger.handlers_locator';
-
-		$locatorDifinition = (new Definition(HandlersLocator::class))->setPublic(true);
-
-		$container->setDefinition($locatorId, $locatorDifinition)->setArgument(0, $handlersLocatorMapping);
-
-		$handleMessageId = 'middleware.handle_message';
-
-		if ($container->has($handleMessageId))
+		foreach ($busIds as $bus)
 		{
-			$container->getDefinition($handleMessageId)->replaceArgument(0, new Reference($locatorId));
+			$locatorId = $bus . '.handlers_locator';
+
+			$locatorDifinition = (new Definition(HandlersLocator::class))->setPublic(true);
+
+			$container->setDefinition($locatorId, $locatorDifinition)
+				->setArgument(0, $handlersLocatorMappingByBus[$bus]);
+
+			$handleMessageId =  $bus . '.middleware.handle_message';
+
+			if ($container->has($handleMessageId))
+			{
+				$container->getDefinition($handleMessageId)->replaceArgument(0, new Reference($locatorId));
+			}
 		}
 	}
 

@@ -12,13 +12,26 @@ services:
       - []
     public: true
 
-  App\Application\Handler\:
-    resource: '../../../Application/Handler/*'
-    tags: [messenger.message_handler]
+  command_handlers:
+    namespace: App\Application\MessageHandler\
+    resource: '../../../Application/MessageHandler/*CommandHandler.php'
+    tags:
+      - { name: messenger.message_handler, bus: messenger.bus.commands }
+    public: true
+
+  query_handlers:
+    namespace: App\Application\MessageHandler\
+    resource: '../../../Application/MessageHandler/*QueryHandler.php'
+    tags:
+      - { name: messenger.message_handler, bus: messenger.bus.queries }
     public: true
 
   App\Infrastructure\Http\Handler\:
     resource: '../../Http/Handler/*'
+    public: true
+
+  App\Infrastructure\Http\Middleware\:
+    resource: '../../Http/Middleware/*'
     public: true
 
   App\Application\EventListener\:
@@ -39,36 +52,48 @@ services:
     alias: Symfony\Component\Validator\Validator\ValidatorInterface
     public: true
 
-  messender.middleware.handle_message_middleware:
+  messenger.handlers_locator:
+    class: Symfony\Component\Messenger\Handler\HandlersLocator
+    arguments:
+      - []
+
+  messenger.bus.queries.middleware.handle_message:
     class: App\Infrastructure\Application\MessageBus\Middleware\HandleMessageWithEventRecorederMiddleware
     arguments:
       - '@messenger.handlers_locator'
       - '@event_recorders'
     public: true
 
-  messender.middleware.logging_middleware:
+  messenger.bus.commands.middleware.handle_message:
+    class: App\Infrastructure\Application\MessageBus\Middleware\HandleMessageWithEventRecorederMiddleware
+    arguments:
+      - '@messenger.handlers_locator'
+      - '@event_recorders'
+    public: true
+
+  messenger.middleware.logging:
     class: Symfony\Component\Messenger\Middleware\LoggingMiddleware
     arguments:
       - '@Psr\Log\LoggerInterface'
     public: true
 
-  messender.middleware.send_message_middleware:
+  messenger.middleware.send_message:
     class: Symfony\Component\Messenger\Middleware\SendMessageMiddleware
     arguments:
       - '@messenger.senders_locator'
     public: true
 
-  messender.middleware.release_recorded_events_middleware:
+  messenger.middleware.release_recorded_events:
     class: App\Infrastructure\Application\MessageBus\Middleware\ReleaseRecordedEventsMiddleware
     public: true
 
-  messender.middleware.validation_middleware:
+  messenger.middleware.validation:
     class: Symfony\Component\Messenger\Middleware\ValidationMiddleware
     arguments:
       - '@validation'
     public: true
 
-  messender.middleware.doctrine_transaction_middleware:
+  messenger.middleware.doctrine_transaction:
     class: App\Infrastructure\Application\MessageBus\Middleware\DoctrineTransactionMiddleware
     arguments:
       - '@doctrine.entitymanager'

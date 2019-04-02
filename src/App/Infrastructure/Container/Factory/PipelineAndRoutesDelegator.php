@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Container\Factory;
 
 use App\Infrastructure\Http\Handler;
+use App\Infrastructure\Http\Middleware\DomainErrorMiddleware;
 use Psr\Container\ContainerInterface;
 use Zend\Expressive\Application;
 use Zend\Expressive\Handler\NotFoundHandler;
@@ -46,7 +47,10 @@ class PipelineAndRoutesDelegator
 		// applications under a common domain.  The handlers in each middleware
 		// attached this way will see a URI with the matched path segment removed.
 		//
-		$app->pipe('/api', ProblemDetailsMiddleware::class);
+		$app->pipe('/api', [
+			ProblemDetailsMiddleware::class,
+			DomainErrorMiddleware::class,
+		]);
 		// i.e., path of "/api/member/profile" only passes "/member/profile" to $apiMiddleware
 		// - $app->pipe('/api', $apiMiddleware);
 		// - $app->pipe('/docs', $apiDocMiddleware);

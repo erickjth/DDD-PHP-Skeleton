@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Handler;
+namespace App\Application\MessageHandler;
 
 use App\Application\MessageBus\Recorder\EventRecorderAware;
 use App\Application\MessageBus\Recorder\EventRecorderAwareTrait;
 use App\Application\Command\PingCommand;
 use App\Application\Event\PingWasDoneEvent;
 
-class PingHandler implements EventRecorderAware
+class PingQueryHandler implements EventRecorderAware
 {
 	use EventRecorderAwareTrait;
 

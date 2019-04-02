@@ -24,18 +24,18 @@ class CommandBusFactory
 		$debug = $config['debug'] ?? false;
 
 		$middlewareStack = [
-			$container->get('messender.middleware.validation_middleware'),
-			$container->get('messender.middleware.doctrine_transaction_middleware'),
-			$container->get('messender.middleware.release_recorded_events_middleware')
+			$container->get('messenger.middleware.validation'),
+			$container->get('messenger.middleware.doctrine_transaction'),
+			$container->get('messenger.middleware.release_recorded_events')
 		];
 
 		if ($debug === true)
 		{
-			$middlewareStack[] = $container->get('messender.middleware.logging_middleware');
+			$middlewareStack[] = $container->get('messenger.middleware.logging');
 		}
 
-		$middlewareStack[] = $container->get('messender.middleware.send_message_middleware');
-		$middlewareStack[] = $container->get('messender.middleware.handle_message_middleware');
+		$middlewareStack[] = $container->get('messenger.middleware.send_message');
+		$middlewareStack[] = $container->get('messenger.bus.commands.middleware.handle_message');
 
 		$bus = new MessageBus($middlewareStack);
 
