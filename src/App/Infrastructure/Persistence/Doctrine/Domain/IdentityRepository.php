@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Persistence\Doctrine;
+namespace App\Infrastructure\Persistence\Doctrine\Domain;
 
 use App\Domain\Contract\IdentityRepository as IdentityRepositoryInterface;
 use App\Domain\Contract\Identifier;
@@ -25,6 +25,6 @@ class IdentityRepository extends EntityRepository implements IdentityRepositoryI
 
 	public function store(Identity $identity): void
 	{
-
+		$this->getEntityManager()->persist($identity);
 	}
 }

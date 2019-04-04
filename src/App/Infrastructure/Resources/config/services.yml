@@ -14,17 +14,17 @@ services:
 
   command_handlers:
     namespace: App\Application\MessageHandler\
-    resource: '../../../Application/MessageHandler/*CommandHandler.php'
+    resource: '../../../Application/MessageHandler/*Handler.php'
     tags:
       - { name: messenger.message_handler, bus: messenger.bus.commands }
     public: true
 
-  query_handlers:
-    namespace: App\Application\MessageHandler\
-    resource: '../../../Application/MessageHandler/*QueryHandler.php'
-    tags:
-      - { name: messenger.message_handler, bus: messenger.bus.queries }
-    public: true
+  # query_handlers:
+  #   namespace: App\Application\MessageHandler\
+  #   resource: '../../../Application/MessageHandler/*QueryHandler.php'
+  #   tags:
+  #     - { name: messenger.message_handler, bus: messenger.bus.queries }
+  #   public: true
 
   App\Infrastructure\Http\Handler\:
     resource: '../../Http/Handler/*'
@@ -98,3 +98,8 @@ services:
     arguments:
       - '@doctrine.entitymanager'
     public: true
+
+  App\Infrastructure\Persistence\Doctrine\OAuth2\:
+    resource: '../../Persistence/Doctrine/OAuth2/*'
+    public: true
+

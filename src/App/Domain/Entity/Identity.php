@@ -13,8 +13,13 @@ class Identity
 	private $identityId;
 	private $firstName;
 	private $lastName;
+	private $username;
 	private $email;
+	private $emailVerified = 0;
+	private $password;
 	private $createdAt;
+	private $updatedAt;
+	private $deletedAt;
 
 	public function __construct(
 		IdentityId $identityId,
@@ -29,6 +34,7 @@ class Identity
 		$this->lastName = $lastName;
 		$this->email = $email;
 		$this->createdAt = $createdAt;
+		$this->updatedAt = $createdAt;
 	}
 
 	public static function create(
@@ -45,6 +51,17 @@ class Identity
 			$email,
 			new DateTimeImmutable('now')
 		);
+	}
+
+	public function setLogin(string $username, string $password)
+	{
+		$this->username = $username;
+		$this->password = $password;
+	}
+
+	public function setEmailVerified(bool $verified)
+	{
+		$this->emailVerified = $verified;
 	}
 
 	/**
@@ -85,6 +102,38 @@ class Identity
 	public function getCreatedAt()
 	{
 		return $this->createdAt;
+	}
+
+	/**
+	 * Get the value of username
+	 */
+	public function getUsername()
+	{
+		return $this->username;
+	}
+
+	/**
+	 * Get the value of emailVerified
+	 */
+	public function getEmailVerified()
+	{
+		return $this->emailVerified;
+	}
+
+	/**
+	 * Get the value of deletedAt
+	 */
+	public function getDeletedAt()
+	{
+		return $this->deletedAt;
+	}
+
+	/**
+	 * Get the value of updatedAt
+	 */
+	public function getUpdatedAt()
+	{
+		return $this->updatedAt;
 	}
 }
 

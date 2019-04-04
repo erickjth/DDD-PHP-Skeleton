@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Infrastructure\Container\Factory;
+use App\Infrastructure\Http\PipelineAndRoutesDelegator;
 use Zend\Expressive\Application;
 
 return [
@@ -28,7 +28,7 @@ return [
         ],
         'delegators' => [
             Application::class => [
-                Factory\PipelineAndRoutesDelegator::class,
+                PipelineAndRoutesDelegator::class,
             ],
         ],
     ],

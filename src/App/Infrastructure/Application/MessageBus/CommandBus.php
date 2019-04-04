@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace App\Infrastructure\Application\MessageBus;
 
 use App\Application\Contract\MessageBus\CommandBus as CommandBusInterface;
+use Symfony\Component\Messenger\HandleTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 class CommandBus implements CommandBusInterface
 {
+	use HandleTrait { handle as private privateHandle; }
+
 	/**
 	 * Constructor
 	 *
@@ -26,6 +29,6 @@ class CommandBus implements CommandBusInterface
 	 */
 	public function handle($command)
 	{
-		return $this->messageBus->dispatch($command);
+		return $this->privateHandle($command);
 	}
 }

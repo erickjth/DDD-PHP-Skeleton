@@ -10,25 +10,37 @@ Basic implementation of Domain-Driven Design using Zend Expressive as a HTTP Por
 - Symfony Dependency Injection
 - Symfony Messager
 
-# Pending
-- Domain Models
-- Doctrine Integration
 
+# Set up
 
-## Getting Started
+- run `composer install`
+- run `./vendor/bin/generate-oauth2-keys`
+- run `php bin/migrations.php migrations:migrate`
+- run `cp config/autoload/local.php.dist config/autoload/local.php`
 
-## Config
-- `cp config/autoload/local.php.dist config/autoload/local.php`
-
-## Setup database connection.
-
-Start the project with composer:
+## Start the project with composer:
 
 ```bash
 $ composer run --timeout=0 serve
 ```
 
 You can then browse to http://localhost:8080.
+
+## OAuth2
+This project uses OAuth2 with PasswordGrant for the authentication.
+
+### OAuth Client
+- client_id = `client_api`
+- client_secret = `secret`
+
+### Get Token
+- Call `POST /oauth2/token` with the following params:
+	- grant_type='password'
+	- client_id='client_id'
+	- client_secret='client_secret'
+	- scope=''
+	- username='john@doe.org'
+	- password='abc1234'
 
 ## Application Development Mode Tool
 

@@ -11,7 +11,7 @@ interface Identifier
 	 *
 	 * @return Identifier
 	 */
-	public static function generate() : Identifier;
+	public static function generate();
 
 	/**
 	 * Creates an Identifier from a string
@@ -19,7 +19,7 @@ interface Identifier
 	 * @param $string
 	 * @return Identifier
 	 */
-	public static function fromString($string) : Identifier;
+	public static function fromString($string);
 
 	/**
 	 * Determine equality with another Identifier

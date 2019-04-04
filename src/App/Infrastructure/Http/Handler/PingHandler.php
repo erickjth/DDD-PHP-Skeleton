@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Http\Handler;
 
 use App\Application\Command\PingCommand;
-use App\Application\Contract\MessageBus\QueryBus;
+use App\Application\Contract\MessageBus\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -15,9 +15,9 @@ use function time;
 
 class PingHandler implements RequestHandlerInterface
 {
-	public function __construct(QueryBus $queryBus)
+	public function __construct(CommandBus $bus)
 	{
-		$this->queryBus = $queryBus;
+		$this->bus = $bus;
 	}
 
 	public function handle(ServerRequestInterface $request) : ResponseInterface
@@ -26,7 +26,7 @@ class PingHandler implements RequestHandlerInterface
 
 		$command = new PingCommand(...$args);
 
-		$result = $this->queryBus->query($command);
+		$result = $this->bus->handle($command);
 
 		return new JsonResponse($result);
 	}

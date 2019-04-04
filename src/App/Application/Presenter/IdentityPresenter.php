@@ -22,7 +22,10 @@ class IdentityPresenter
 			'firstName' => $this->identity->getFirstName(),
 			'lastName' => $this->identity->getLastName(),
 			'email' => $this->identity->getEmail(),
+			'username' => $this->identity->getUsername(),
+			'emailVerified' => $this->identity->getEmailVerified(),
 			'createdAt' => $this->identity->getCreatedAt()->format('Y-m-d\TH:i:s\Z'),
+			'updatedAt' => $this->identity->getUpdatedAt()->format('Y-m-d\TH:i:s\Z'),
 		];
 	}
 }

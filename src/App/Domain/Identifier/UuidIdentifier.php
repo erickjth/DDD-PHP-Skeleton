@@ -22,7 +22,7 @@ class UuidIdentifier implements Identifier
 	 *
 	 * @return Identifier
 	 */
-	public static function generate() : Identifier
+	public static function generate()
 	{
 		return new static(Uuid::uuid4());
 	}
@@ -33,7 +33,7 @@ class UuidIdentifier implements Identifier
 	 * @param $string
 	 * @return Identifier
 	 */
-	public static function fromString($string) : Identifier
+	public static function fromString($string)
 	{
 		return new static(Uuid::fromString($string));
 	}

@@ -1,7 +1,7 @@
 App\Domain\Entity\Identity:
     type: entity
     table: identity
-    repositoryClass: App\Infrastructure\Persistence\Doctrine\IdentityRepository
+    repositoryClass: App\Infrastructure\Persistence\Doctrine\Domain\IdentityRepository
     id:
         id:
           type: integer
@@ -27,6 +27,24 @@ App\Domain\Entity\Identity:
         options:
           fixed: true
           comment: User's email address
+      emailVerified:
+        type: boolean
+        options:
+          default: 0
+      username:
+        type: string
+        length: 32
+        unique: true
+        options:
+          fixed: true
+          comment: Login username
+      password:
+        type: string
+        length: 100
       createdAt:
+        type: datetime
+      updatedAt:
+        type: datetime
+      deletedAt:
         type: datetime
 

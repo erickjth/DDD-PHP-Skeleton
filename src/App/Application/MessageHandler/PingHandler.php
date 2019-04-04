@@ -9,7 +9,7 @@ use App\Application\MessageBus\Recorder\EventRecorderAwareTrait;
 use App\Application\Command\PingCommand;
 use App\Application\Event\PingWasDoneEvent;
 
-class PingQueryHandler implements EventRecorderAware
+class PingHandler implements EventRecorderAware
 {
 	use EventRecorderAwareTrait;
 

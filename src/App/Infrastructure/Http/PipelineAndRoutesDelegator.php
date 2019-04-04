@@ -2,12 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Container\Factory;
+namespace App\Infrastructure\Http;
 
 use App\Infrastructure\Http\Handler;
 use App\Infrastructure\Http\Middleware\DomainErrorMiddleware;
+use App\Infrastructure\Http\Middleware\OAuthAuthorizationMiddleware;
 use Psr\Container\ContainerInterface;
 use Zend\Expressive\Application;
+use Zend\Expressive\Authentication\OAuth2;
+use Zend\Expressive\Authentication\AuthenticationMiddleware;
 use Zend\Expressive\Handler\NotFoundHandler;
 use Zend\Expressive\Helper\ServerUrlMiddleware;
 use Zend\Expressive\Helper\UrlHelperMiddleware;
@@ -118,8 +121,24 @@ class PipelineAndRoutesDelegator
 		 *     'contact'
 		 * );
 		 */
+
+		// Oauth 2
+		$app->post('/oauth2/token', OAuth2\TokenEndpointHandler::class);
+
+		$app->route('/oauth2/authorize', [
+			OAuth2\AuthorizationMiddleware::class,
+			OAuthAuthorizationMiddleware::class,
+			OAuth2\AuthorizationHandler::class
+		], ['GET', 'POST']);
+
 		$app->route('/api/ping', Handler\PingHandler::class, ['GET'], 'api.ping');
-		$app->route('/api/identity', Handler\GetIdentityHandler::class, ['GET'], 'identity.get');
+
+		$app->get('/api/identity', [
+			AuthenticationMiddleware::class,
+			Handler\GetIdentityHandler::class
+		], 'identity.get');
+
+		$app->post('/api/identity', Handler\CreateIdentityHandler::class, 'identity.create');
 
 		return $app;
 	}

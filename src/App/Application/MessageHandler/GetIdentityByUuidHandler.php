@@ -10,7 +10,7 @@ use App\Domain\Contract\IdentityRepository;
 use App\Domain\ValueObject\IdentityId;
 use App\Domain\Exception\EntityNotFoundException;
 
-class GetIdentityByUuidQueryHandler
+class GetIdentityByUuidHandler
 {
 	/**
 	 * Identity Repository
