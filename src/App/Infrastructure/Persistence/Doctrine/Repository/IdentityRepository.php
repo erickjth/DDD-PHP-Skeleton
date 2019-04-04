@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Persistence\Doctrine\Domain;
+namespace App\Infrastructure\Persistence\Doctrine\Repository;
 
 use App\Domain\Contract\IdentityRepository as IdentityRepositoryInterface;
 use App\Domain\Contract\Identifier;

@@ -1,7 +1,7 @@
 App\Domain\Entity\Identity:
     type: entity
     table: identity
-    repositoryClass: App\Infrastructure\Persistence\Doctrine\Domain\IdentityRepository
+    repositoryClass: App\Infrastructure\Persistence\Doctrine\Repository\IdentityRepository
     id:
         id:
           type: integer
